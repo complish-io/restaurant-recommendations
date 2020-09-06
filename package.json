@@ -11,6 +11,16 @@
   "jest": {
     "preset": "jest-expo"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix"
+    ]
+  },
   "dependencies": {
     "@expo/vector-icons": "^10.0.0",
     "@react-native-community/masked-view": "0.1.10",
@@ -37,8 +47,18 @@
     "@babel/core": "^7.8.6",
     "@types/react": "~16.9.23",
     "@types/react-native": "~0.62.13",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
     "babel-preset-expo": "~8.1.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-native": "^3.9.1",
+    "husky": "^4.2.5",
     "jest-expo": "~38.0.0",
+    "lint-staged": "^10.3.0",
+    "prettier": "^2.1.1",
     "typescript": "~3.9.5"
   },
   "private": true
