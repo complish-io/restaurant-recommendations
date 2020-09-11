@@ -2,6 +2,7 @@ import { loggingMiddleware } from 'redoodle';
 import { applyMiddleware, createStore, StoreEnhancer } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { PersistedState, persistReducer, persistStore } from 'redux-persist';
+import promise from 'redux-promise-middleware';
 import AsyncStorage from '@react-native-community/async-storage';
 import { initialState } from './initialState';
 import { rootReducer } from './reducers';
@@ -12,6 +13,7 @@ const composeEnhancers = composeWithDevTools({
 
 const enhancers = composeEnhancers(
   applyMiddleware(
+    promise,
     loggingMiddleware({
       enableInProduction: false,
     }),
@@ -28,4 +30,5 @@ const persistConfig = {
 const persistedReducer = persistReducer<any>(persistConfig, rootReducer);
 
 export const store = createStore(persistedReducer, initialState, enhancers);
+
 export const persistor = persistStore(store);

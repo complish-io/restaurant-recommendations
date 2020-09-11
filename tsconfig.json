@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["googlemaps"],
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
     "lib": ["dom", "esnext"],
