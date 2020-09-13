@@ -1,4 +1,4 @@
-import { Restaurants } from '../services/yelp';
+import { Business } from '../services/yelp';
 
 export interface Coordinates {
   latitude?: number;
@@ -17,5 +17,5 @@ export interface UserDetails {
 
 export interface AppState {
   userDetails: UserDetails;
-  restaurants: Restaurants[];
+  restaurants: Business[];
 }

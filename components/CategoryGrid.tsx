@@ -10,6 +10,8 @@ import JapanesePng from '../assets/images/japanese.png';
 import VegetarianPng from '../assets/images/vegetarian.png';
 import KoreanPng from '../assets/images/korean.png';
 import VietnamesePng from '../assets/images/vietnamese.png';
+import { white } from '../theme/colors';
+import { isLeft, inLastRow } from '../utils';
 
 interface Item {
   item: {
@@ -34,9 +36,6 @@ const categories = [
   { name: 'Vietnamese', image: VietnamesePng },
 ];
 
-const isLeft = (num: number) => num % 2 === 0;
-const inLastRow = (num: number) => num >= 8;
-
 const CategoryGrid: FC = () => {
   const renderItem: RenderItem = ({ item: { name, image }, index }) => {
     const marginProps = {
@@ -46,16 +45,24 @@ const CategoryGrid: FC = () => {
     return (
       <View>
         <View style={{ ...marginProps }}>
-          <Image key={name} source={image} height={136} width={168} borderRadius={8} />
+          <Image source={image} height={136} width={168} borderRadius={8} />
           <View style={styles.imageOverlay}></View>
         </View>
         <View style={styles.textContainer}>
-          <Text style={{ color: 'white' }}>{name}</Text>
+          <Text style={{ color: white }}>{name}</Text>
         </View>
       </View>
     );
   };
-  return <FlatList style={{ marginTop: 16 }} data={categories} renderItem={renderItem} numColumns={2}></FlatList>;
+  return (
+    <FlatList
+      style={{ marginTop: 16 }}
+      data={categories}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.name}
+      numColumns={2}
+    />
+  );
 };
 
 const styles = StyleSheet.create({

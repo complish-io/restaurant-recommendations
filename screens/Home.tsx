@@ -1,15 +1,15 @@
-import React, { FC, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet } from 'react-native';
-import { AppState } from '../redux/appState';
+import React, { FC, useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import SwitchSelector from 'react-native-switch-selector';
-import CategoryGrid from '../components/CategoryGrid';
+import { useDispatch, useSelector } from 'react-redux';
+import Discover from '../components/Discover';
+import Nearby from '../components/Nearby';
 import StatusBar from '../components/StatusBar';
-import { Text, View } from '../components/Themed';
-import { darkGray, gray, white } from '../theme/colors';
-import { getUserCoordinates, getUserLocation } from '../redux/actions/userDetailsActions';
 import { getRestaurants } from '../redux/actions/restaurantsActions';
+import { getUserCoordinates, getUserLocation } from '../redux/actions/userDetailsActions';
+import { AppState, Coordinates } from '../redux/appState';
+import { darkGray, gray, white } from '../theme/colors';
 
 const options = [
   {
@@ -22,7 +22,10 @@ const options = [
   },
 ];
 
+type ToggleStates = 'Discover' | 'Nearby';
+
 const Home: FC = () => {
+  const [toggleState, changeToggleState] = useState<ToggleStates>('Discover');
   const location = useSelector((state: AppState) => state.userDetails.location);
   const coordinates = useSelector((state: AppState) => state.userDetails.coordinates);
   const dispatch = useDispatch();
@@ -53,14 +56,18 @@ const Home: FC = () => {
           initial={0}
           backgroundColor={gray}
           hasPadding
-          onPress={() => undefined}
+          onPress={(value) => {
+            setTimeout(() => {
+              changeToggleState(value as ToggleStates);
+            }, 225);
+          }}
           fontSize={12}
           valuePadding={4}
           bold
-          style={{ marginTop: 23 }}
+          style={{ marginTop: 23, width: 225 }}
         />
-        <Text style={{ marginTop: 24, textAlign: 'center' }}>Top Categories</Text>
-        <CategoryGrid />
+        {toggleState == 'Discover' && <Discover />}
+        <Nearby isVisible={toggleState === 'Nearby'} />
       </ScrollView>
     </View>
   );
@@ -70,7 +77,6 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 35,
     paddingBottom: 24,
-    paddingHorizontal: 16,
     flex: 1,
     alignItems: 'center',
   },

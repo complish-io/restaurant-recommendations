@@ -138,7 +138,10 @@ class YelpApiClient {
   }
   getRestaurants: GetRestaurants = (queryParams) => {
     const requiredQueryParams = omitBy(queryParams, isNil);
-    const qs = queryString.stringify(requiredQueryParams);
+    const qs = queryString.stringify({
+      ...requiredQueryParams,
+      limit: 10,
+    });
     return this.client.get(`https://api.yelp.com/v3/businesses/search?${qs}`);
   };
   getRestaurantDetails: GetRestaurantDetails = (id) => {

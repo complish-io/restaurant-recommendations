@@ -1,6 +1,7 @@
 import { Reducer } from 'redux';
+import { Business } from '../../services/yelp';
 
-const initialState = { restaurants: undefined };
+const initialState: Business[] = [];
 
 const restaurantsReducer: Reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -8,9 +9,7 @@ const restaurantsReducer: Reducer = (state = initialState, action) => {
       return state;
 
     case `GET_RESTAURANTS_FULFILLED`:
-      return {
-        restaurants: action.payload,
-      };
+      return action.payload;
 
     default:
       return state;

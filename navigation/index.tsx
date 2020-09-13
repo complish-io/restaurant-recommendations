@@ -1,22 +1,16 @@
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { FC } from 'react';
-import { ColorSchemeName } from 'react-native';
-
+import Home from '../screens/Home';
 import { RootStackParamList } from '../types';
-import Discover from '../screens/Discover';
-
-interface Props {
-  colorScheme: ColorSchemeName;
-}
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export const Navigation: FC<Props> = ({ colorScheme }) => {
+export const Navigation: FC = () => {
   return (
-    <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="discover" component={Discover} />
+        <Stack.Screen name="home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
   );
