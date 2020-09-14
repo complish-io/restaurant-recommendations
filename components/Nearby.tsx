@@ -51,6 +51,7 @@ const Nearby: FC<NearbyProps> = ({ isVisible }) => {
   };
 
   const styles = createStyles(isVisible);
+  if (!restaurants.length) return <View></View>;
   return (
     <View style={styles.container}>
       <MapView

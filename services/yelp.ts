@@ -8,7 +8,7 @@ interface Category {
   title: string;
 }
 
-interface Location {
+export interface Location {
   address1: string;
   address2: string;
   address3: string;
@@ -19,10 +19,16 @@ interface Location {
   cross_streets: string;
 }
 
-interface Coordinates {
+export interface Coordinates {
   latitude: number;
   longitude: number;
 }
+
+export type Hours = {
+  open: DayHours[];
+  hours_type: string;
+  is_open_now: boolean;
+}[];
 
 interface DayHours {
   is_overnight: boolean;
@@ -84,7 +90,7 @@ export interface Restaurants {
   };
 }
 
-interface RestaurantDetails {
+export interface RestaurantDetails {
   id: string;
   alias: string;
   name: string;
@@ -103,7 +109,7 @@ interface RestaurantDetails {
   price: string;
   hours: [
     {
-      open: DayHours;
+      open: DayHours[];
       hours_type: string;
       is_open_now: boolean;
     },
@@ -145,7 +151,7 @@ class YelpApiClient {
     return this.client.get(`https://api.yelp.com/v3/businesses/search?${qs}`);
   };
   getRestaurantDetails: GetRestaurantDetails = (id) => {
-    return this.client.get(`https://api.yelpcom/v3/businesses?${id}`);
+    return this.client.get(`https://api.yelp.com/v3/businesses/${id}`);
   };
 }
 

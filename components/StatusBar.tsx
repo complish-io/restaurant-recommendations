@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import { StatusBar } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
-const PrimaryStatusBar: FC = () => <StatusBar barStyle="light-content" animated />;
+const PrimaryStatusBar: FC = () => <StatusBar style="dark" animated />;
 
 export default PrimaryStatusBar;

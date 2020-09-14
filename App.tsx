@@ -8,6 +8,8 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './redux/configureStore';
 import { PersistGate } from 'redux-persist/integration/react';
 
+// TODO: Add Styled System
+
 export default function App(): ReactNode {
   const isLoadingComplete = useCachedResources();
 

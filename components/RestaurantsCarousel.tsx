@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { FC, ReactElement } from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { useSelector } from 'react-redux';
 import Layout from '../constants/Layout';
@@ -9,6 +9,13 @@ import { AppState } from '../redux/appState';
 import { Business } from '../services/yelp';
 import { white } from '../theme/colors';
 import { convertToMiles, mergeCategories } from '../utils';
+import { RootStackParamList } from '../types';
+import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type HomeNavigationProp = StackNavigationProp<RootStackParamList, 'home'>;
+
+type RenderItem = (item: { item: Business; index: number }) => ReactElement;
 
 interface RestaurantCarouselProps {
   activeItemId: string;
@@ -16,8 +23,8 @@ interface RestaurantCarouselProps {
   carouselRef: React.RefObject<Carousel<Business>>;
 }
 
-type RenderItem = (item: { item: Business; index: number }) => ReactElement;
 const RestaurantCarousel: FC<RestaurantCarouselProps> = ({ activeItemId, setActiveItemId, carouselRef }) => {
+  const navigation = useNavigation<HomeNavigationProp>();
   const { restaurants } = useSelector((state: AppState) => ({
     restaurants: state.restaurants,
   }));
@@ -42,7 +49,10 @@ const RestaurantCarousel: FC<RestaurantCarouselProps> = ({ activeItemId, setActi
     const isActiveIndex = id === activeItemId;
 
     return (
-      <View style={{ flex: 1 }}>
+      <TouchableOpacity
+        style={{ flex: 1 }}
+        onPress={() => navigation.navigate('restaurantDetails', { restaurantId: id })}
+      >
         <View>
           <ImageBackground source={{ uri: image_url }} style={styles.imageBackground}>
             <LinearGradient
@@ -64,7 +74,7 @@ const RestaurantCarousel: FC<RestaurantCarouselProps> = ({ activeItemId, setActi
             </LinearGradient>
           </ImageBackground>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

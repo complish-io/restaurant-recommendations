@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import SwitchSelector from 'react-native-switch-selector';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { getRestaurants } from '../redux/actions/restaurantsActions';
 import { getUserCoordinates, getUserLocation } from '../redux/actions/userDetailsActions';
 import { AppState, Coordinates } from '../redux/appState';
 import { darkGray, gray, white } from '../theme/colors';
+import commonStyles from '../theme/styles';
 
 const options = [
   {
@@ -24,7 +25,7 @@ const options = [
 
 type ToggleStates = 'Discover' | 'Nearby';
 
-const Home: FC = () => {
+const HomeScreen: FC = () => {
   const [toggleState, changeToggleState] = useState<ToggleStates>('Discover');
   const location = useSelector((state: AppState) => state.userDetails.location);
   const coordinates = useSelector((state: AppState) => state.userDetails.coordinates);
@@ -39,7 +40,7 @@ const Home: FC = () => {
     }
   }, [coordinates]);
   return (
-    <View style={styles.container}>
+    <View style={commonStyles.container}>
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ alignItems: 'center' }}
@@ -73,13 +74,4 @@ const Home: FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 35,
-    paddingBottom: 24,
-    flex: 1,
-    alignItems: 'center',
-  },
-});
-
-export default Home;
+export default HomeScreen;
