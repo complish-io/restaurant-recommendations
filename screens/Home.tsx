@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useRef, FC, useEffect, useState, RefObject } from 'react';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import SwitchSelector from 'react-native-switch-selector';
@@ -26,6 +26,7 @@ const options = [
 type ToggleStates = 'Discover' | 'Nearby';
 
 const HomeScreen: FC = () => {
+  const switchSelectorRef = useRef<SwitchSelector>(null);
   const [toggleState, changeToggleState] = useState<ToggleStates>('Discover');
   const location = useSelector((state: AppState) => state.userDetails.location);
   const coordinates = useSelector((state: AppState) => state.userDetails.coordinates);
@@ -50,6 +51,7 @@ const HomeScreen: FC = () => {
         <Text style={{ width: 105, textAlign: 'center' }}>You are in</Text>
         <Text>{location.neighborhood || location.locality}</Text>
         <SwitchSelector
+          ref={switchSelectorRef}
           textColor={white}
           selectedColor={darkGray}
           buttonColor={white}
@@ -67,7 +69,7 @@ const HomeScreen: FC = () => {
           bold
           style={{ marginTop: 23, width: 225 }}
         />
-        {toggleState == 'Discover' && <Discover />}
+        {toggleState == 'Discover' && <Discover switchSelectorRef={switchSelectorRef} />}
         <Nearby isVisible={toggleState === 'Nearby'} />
       </ScrollView>
     </View>

@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react';
-import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import ChinesePng from '../assets/images/chinese.png';
 import GreekPng from '../assets/images/greek.png';
 import PizzaPng from '../assets/images/pizza.png';
@@ -12,6 +12,10 @@ import KoreanPng from '../assets/images/korean.png';
 import VietnamesePng from '../assets/images/vietnamese.png';
 import { white } from '../theme/colors';
 import { isLeft, inLastRow } from '../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRestaurants } from '../redux/actions/restaurantsActions';
+import { AppState, Coordinates } from '../redux/appState';
+import SwitchSelector from 'react-native-switch-selector';
 
 interface Item {
   item: {
@@ -36,22 +40,41 @@ const categories = [
   { name: 'Vietnamese', image: VietnamesePng },
 ];
 
-const CategoryGrid: FC = () => {
+interface CategoryGridProps {
+  switchSelectorRef: React.RefObject<SwitchSelector>;
+}
+
+const CategoryGrid: FC<CategoryGridProps> = ({ switchSelectorRef }) => {
+  const dispatch = useDispatch();
+  const { coordinates } = useSelector((state: AppState) => ({
+    coordinates: state.userDetails.coordinates,
+  }));
+
   const renderItem: RenderItem = ({ item: { name, image }, index }) => {
     const marginProps = {
       marginRight: isLeft(index) ? 8 : 0,
       marginBottom: inLastRow(index) ? 0 : 8,
     };
+    const categories = name.toLowerCase();
     return (
-      <View>
-        <View style={{ ...marginProps }}>
-          <Image source={image} height={136} width={168} borderRadius={8} />
-          <View style={styles.imageOverlay}></View>
+      <TouchableOpacity
+        onPress={() => {
+          dispatch(getRestaurants({ ...(coordinates as Required<Coordinates>), categories }));
+          setTimeout(() => {
+            switchSelectorRef.current?.toggleItem(1);
+          }, 350);
+        }}
+      >
+        <View>
+          <View style={{ ...marginProps }}>
+            <Image source={image} height={136} width={168} borderRadius={8} />
+            <View style={styles.imageOverlay}></View>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={{ color: white }}>{name}</Text>
+          </View>
         </View>
-        <View style={styles.textContainer}>
-          <Text style={{ color: white }}>{name}</Text>
-        </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (

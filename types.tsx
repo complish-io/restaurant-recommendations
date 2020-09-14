@@ -3,4 +3,5 @@ export type RootStackParamList = {
   restaurantDetails: {
     restaurantId: string;
   };
+  search: undefined;
 };
