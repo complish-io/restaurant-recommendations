@@ -40,6 +40,8 @@ const RestaurantDetailsScreen: FC<RestaurantDetailsProps> = ({ route }) => {
     coordinates,
     location: address = {},
     hours = [],
+    // TODO: Get Distance
+    distance = 5,
     display_phone: phoneNumber,
   } = (restaurantDetails || {}) as RestaurantDetails;
 
@@ -54,7 +56,7 @@ const RestaurantDetailsScreen: FC<RestaurantDetailsProps> = ({ route }) => {
         <Text style={{ width: 105, textAlign: 'center' }}>You are in</Text>
         <Text>{location.neighborhood || location.locality}</Text>
         <Image source={{ uri: imageUrl }} style={{ width: Layout.WIDTH, height: 215, marginTop: 13 }} />
-        <RestaurantSummary name={name} rating={rating} categories={categories} />
+        <RestaurantSummary name={name} rating={rating} categories={categories} distance={distance} />
         <RestaurantAddress address={address} coordinates={coordinates} />
         <RestaurantHours hours={hours} />
         <View style={[commonStyles.screenWidth, { marginTop: 8 }]}>

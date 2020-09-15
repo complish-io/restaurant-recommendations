@@ -1,6 +1,6 @@
-import React, { useRef, FC, useEffect, useState, RefObject } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import SwitchSelector from 'react-native-switch-selector';
 import { useDispatch, useSelector } from 'react-redux';
 import Discover from '../components/Discover';
@@ -11,6 +11,9 @@ import { getUserCoordinates, getUserLocation } from '../redux/actions/userDetail
 import { AppState, Coordinates } from '../redux/appState';
 import { darkGray, gray, white } from '../theme/colors';
 import commonStyles from '../theme/styles';
+import { RootStackParamList } from '../types';
+import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const options = [
   {
@@ -25,7 +28,10 @@ const options = [
 
 type ToggleStates = 'Discover' | 'Nearby';
 
+type HomeNavigationProp = StackNavigationProp<RootStackParamList, 'home'>;
+
 const HomeScreen: FC = () => {
+  const navigation = useNavigation<HomeNavigationProp>();
   const switchSelectorRef = useRef<SwitchSelector>(null);
   const [toggleState, changeToggleState] = useState<ToggleStates>('Discover');
   const location = useSelector((state: AppState) => state.userDetails.location);
@@ -48,6 +54,12 @@ const HomeScreen: FC = () => {
         showsVerticalScrollIndicator={false}
       >
         <StatusBar />
+        <TouchableOpacity
+          onPress={() => navigation.navigate('search')}
+          style={{ borderColor: 'black', borderWidth: 1 }}
+        >
+          <Text>Go to Search</Text>
+        </TouchableOpacity>
         <Text style={{ width: 105, textAlign: 'center' }}>You are in</Text>
         <Text>{location.neighborhood || location.locality}</Text>
         <SwitchSelector

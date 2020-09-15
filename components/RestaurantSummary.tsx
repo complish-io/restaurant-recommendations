@@ -3,15 +3,16 @@ import React, { FC } from 'react';
 import { Text, View } from 'react-native';
 import { gray } from '../theme/colors';
 import commonStyles from '../theme/styles';
-import { Category, mergeCategories } from '../utils';
+import { Category, mergeCategories, convertToMiles } from '../utils';
 
 interface RestaurantSummaryProps {
   name: string;
   rating: number;
+  distance: number;
   categories: Category[];
 }
 
-export const RestaurantSummary: FC<RestaurantSummaryProps> = ({ name, rating, categories }) => {
+export const RestaurantSummary: FC<RestaurantSummaryProps> = ({ name, rating, categories, distance }) => {
   return (
     <View style={[commonStyles.screenWidth, { marginTop: 12, marginBottom: 8 }]}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -21,7 +22,8 @@ export const RestaurantSummary: FC<RestaurantSummaryProps> = ({ name, rating, ca
           <Text style={commonStyles.gray}> {rating}</Text>
         </Text>
         <Text style={commonStyles.gray}>
-          <FontAwesome5 style={commonStyles.gray} name="map-marker-alt" size={12} color={gray} /> 5 mi
+          <FontAwesome5 style={commonStyles.gray} name="map-marker-alt" size={12} color={gray} />
+          {convertToMiles(distance)} mi
         </Text>
       </View>
       <Text numberOfLines={1} style={commonStyles.gray}>
