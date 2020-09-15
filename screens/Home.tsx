@@ -12,7 +12,7 @@ import { AppState, Coordinates } from '../redux/appState';
 import { darkGray, gray, white } from '../theme/colors';
 import commonStyles from '../theme/styles';
 import { RootStackParamList } from '../types';
-import { useNavigation } from '@react-navigation/core';
+import { RouteProp, useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 const options = [
@@ -30,12 +30,18 @@ type ToggleStates = 'Discover' | 'Nearby';
 
 type HomeNavigationProp = StackNavigationProp<RootStackParamList, 'home'>;
 
-const HomeScreen: FC = () => {
+interface HomeScreenProps {
+  route: RouteProp<RootStackParamList, 'home'>;
+}
+const HomeScreen: FC<HomeScreenProps> = ({ route }) => {
   const navigation = useNavigation<HomeNavigationProp>();
   const switchSelectorRef = useRef<SwitchSelector>(null);
   const [toggleState, changeToggleState] = useState<ToggleStates>('Discover');
   const location = useSelector((state: AppState) => state.userDetails.location);
   const coordinates = useSelector((state: AppState) => state.userDetails.coordinates);
+  const restaurantId = route.params?.restaurantId;
+  console.log({ restaurantId });
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUserCoordinates());
@@ -46,6 +52,14 @@ const HomeScreen: FC = () => {
       dispatch(getRestaurants(coordinates as Required<Coordinates>));
     }
   }, [coordinates]);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (restaurantId) {
+        switchSelectorRef.current?.toggleItem(1);
+      }
+    });
+    return unsubscribe;
+  }, [navigation, restaurantId]);
   return (
     <View style={commonStyles.container}>
       <ScrollView

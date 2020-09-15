@@ -1,8 +1,9 @@
-import Geocoder from 'react-native-geocoding';
+import axios, { AxiosInstance, AxiosPromise } from 'axios';
 import Constants from 'expo-constants';
-import { Coordinates } from '../redux/appState';
-import axios, { AxiosInstance } from 'axios';
+import { GeocodingResult, PlaceAutocompleteResponse } from 'google__maps';
 import queryString from 'query-string';
+import Geocoder from 'react-native-geocoding';
+import { Coordinates } from '../redux/appState';
 
 class GooglePlacesApiClient {
   client: AxiosInstance;
@@ -20,16 +21,20 @@ class GooglePlacesApiClient {
     return this.geocoder.from(latitude, longitude);
   };
 
-  getCities = (term: string) => {
+  getPlaceCoordinates = (place: string) => {
+    return (this.geocoder.from(place) as unknown) as Promise<{ results: GeocodingResult[] }>;
+  };
+
+  // Type is borked
+  getCities = (term: string): AxiosPromise<PlaceAutocompleteResponse> => {
     const queryParams = {
       key: this.apiKey,
       input: term,
-      inputtype: 'textquery',
-      type: '(cities)',
-      fields: 'formatted_address,types',
+      types: ['(cities)'],
+      components: 'country:us',
     };
     const qs = queryString.stringify(queryParams);
-    return this.client.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?${qs}`);
+    return this.client.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?${qs}`);
   };
 }
 
